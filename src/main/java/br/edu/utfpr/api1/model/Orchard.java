@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orchard")
+@Getter
+@Setter
 public class Orchard extends BaseEntity {
     @Column(name = "latitude", nullable = false)
     private String latitude;
