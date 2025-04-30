@@ -1,9 +1,14 @@
 package br.edu.utfpr.api1.controller;
 
+import br.edu.utfpr.api1.dto.OrchardDto;
 import br.edu.utfpr.api1.model.Orchard;
 import br.edu.utfpr.api1.service.OrchardService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +26,18 @@ public class OrchardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Orchard> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(orchardService.findById(id));
+    public ResponseEntity<?> getOrchardById(@PathVariable Long id) {
+    try {
+        Orchard orchard = orchardService.findById(id);
+        return ResponseEntity.ok(orchard);
+    } catch (EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+}
 
     @PostMapping
-    public ResponseEntity<Orchard> create(@RequestBody Orchard orchard, @RequestParam Long propertyId) {
-        return ResponseEntity.ok(orchardService.save(orchard, propertyId));
+    public ResponseEntity<Orchard> create(@RequestBody OrchardDto orchard) {
+        return ResponseEntity.ok(orchardService.createOrchard(orchard));
     }
 
     @PutMapping("/{id}")
@@ -36,8 +46,13 @@ public class OrchardController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        orchardService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            orchardService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

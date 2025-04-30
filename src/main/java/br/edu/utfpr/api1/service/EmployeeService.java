@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 
 import br.edu.utfpr.api1.dto.EmployeeDto;
 import br.edu.utfpr.api1.model.Employee;
+import br.edu.utfpr.api1.model.Property;
 import br.edu.utfpr.api1.repository.EmployeeRepository;
+import br.edu.utfpr.api1.repository.PropertyRepository;
+
 import java.util.List;
 
 @Service
@@ -13,8 +16,20 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Employee createEmployee(Employee employee) {
-       return employeeRepository.save(employee);
+    @Autowired
+    private PropertyRepository propertyRepository;
+
+    public Employee createEmployee(EmployeeDto dto) {
+        Employee employee = new Employee();
+        employee.setName(dto.getName());
+        employee.setEmail(dto.getEmail());
+        if (dto.getPropertyId() != null) {
+            Property property = propertyRepository.findById(dto.getPropertyId())
+                    .orElseThrow(() -> new RuntimeException("Property not found with id: " + dto.getPropertyId()));
+            employee.setProperty(property);
+        }
+
+        return employeeRepository.save(employee);
     }
 
     public List<Employee> getAllEmployees() {
@@ -31,7 +46,7 @@ public class EmployeeService {
 
     public Employee updateEmployee(Long id, EmployeeDto dto) {
         Employee employee = employeeRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
 
         if (dto.getName() != null) {
             employee.setName(dto.getName());

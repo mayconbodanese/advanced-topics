@@ -1,5 +1,7 @@
 package br.edu.utfpr.api1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -21,5 +23,6 @@ public class Employee extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "property_id", nullable = true)
+    @JsonIgnore
     private Property property;
 }

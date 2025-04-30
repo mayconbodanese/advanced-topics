@@ -6,5 +6,4 @@ import br.edu.utfpr.api1.model.Orchard;
 
 
 public interface OrchardRepository extends JpaRepository<Orchard, Long> {
-
 }
