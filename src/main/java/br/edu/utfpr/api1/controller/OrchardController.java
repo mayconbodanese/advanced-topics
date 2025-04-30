@@ -1,8 +1,6 @@
 package br.edu.utfpr.api1.controller;
 
-import br.edu.utfpr.api1.dto.EmployeeDto;
 import br.edu.utfpr.api1.dto.OrchardDto;
-import br.edu.utfpr.api1.model.Employee;
 import br.edu.utfpr.api1.model.Orchard;
 import br.edu.utfpr.api1.service.OrchardService;
 import jakarta.persistence.EntityNotFoundException;
