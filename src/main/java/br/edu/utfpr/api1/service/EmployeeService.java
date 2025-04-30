@@ -8,6 +8,7 @@ import br.edu.utfpr.api1.model.Employee;
 import br.edu.utfpr.api1.model.Property;
 import br.edu.utfpr.api1.repository.EmployeeRepository;
 import br.edu.utfpr.api1.repository.PropertyRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -36,8 +37,9 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Employee findById(Long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + id));
     }
 
     public void deleteEmployee(Long id) {

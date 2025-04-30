@@ -3,13 +3,12 @@ package br.edu.utfpr.api1.controller;
 import br.edu.utfpr.api1.model.Property;
 import br.edu.utfpr.api1.service.PropertyService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/properties")
@@ -34,7 +33,7 @@ public class PropertyController {
     }
 
     @PostMapping
-    public ResponseEntity<Property> createProperty(@RequestBody Property property) {
+    public ResponseEntity<Property> createProperty(@RequestBody @Valid Property property) {
         Property savedProperty = propertyService.save(property);
         return ResponseEntity.ok(savedProperty);
     }
