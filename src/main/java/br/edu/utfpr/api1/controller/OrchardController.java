@@ -3,6 +3,8 @@ package br.edu.utfpr.api1.controller;
 import br.edu.utfpr.api1.dto.OrchardDto;
 import br.edu.utfpr.api1.model.Orchard;
 import br.edu.utfpr.api1.service.OrchardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +16,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orchards")
+@RequestMapping("/api/orchards")
 @RequiredArgsConstructor
+@Tag(name = "Pomares", description = "Endpoints para gerenciamento de pomares")
 public class OrchardController {
 
     private final OrchardService orchardService;
 
+    @Operation(summary = "Buscar todos os pomares")
     @GetMapping
     public List<Orchard> getAll() {
         return orchardService.findAll();
     }
 
+    @Operation(summary = "Buscar pomar por ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrchardById(@PathVariable Long id) {
         try {
@@ -35,16 +40,19 @@ public class OrchardController {
         }
     }
 
+    @Operation(summary = "Criar pomar")
     @PostMapping
     public ResponseEntity<Orchard> create(@RequestBody @Valid OrchardDto orchard) {
         return ResponseEntity.ok(orchardService.createOrchard(orchard));
     }
 
+    @Operation(summary = "Atualizar pomar")
     @PutMapping("/{id}")
     public ResponseEntity<Orchard> update(@PathVariable Long id, @RequestBody Orchard orchard) {
         return ResponseEntity.ok(orchardService.update(id, orchard));
     }
 
+    @Operation(summary = "Deletar pomar")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
